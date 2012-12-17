@@ -49,35 +49,38 @@ class Documentation_m extends MY_Model
         }
 
 		// Loop each document
-		foreach($data AS $doc)
+		if( !empty($data) )
 		{
-
-			// Variables
-			$class = '';
-
-			// Calculate class
-			if( $doc['slug'] == $page AND ( ( isset($parent) AND array_search($parent, $keys) == $doc['parent'] ) OR !isset($parent) ) )
+			foreach($data AS $doc)
 			{
-				$class = ' class="current"';
-			}
-			else if( in_array($doc['slug'], $current) )
-			{
-				$class = ' class="has_current"';
-			}
 
-			$tree .= '<li'.$class.'>' . "\n";
-			$tree .= '  <a href="{{ url:base }}' . $url . $doc['slug'] . '">' . $doc['title'] . '</a>' . "\n";
+				// Variables
+				$class = '';
 
-			if( isset($doc['children']) )
-			{
-				$tree .= '  <ul>' . "\n";
-				$tree  = $this->build_navigation($doc['children'], $current, $keys, $url.$doc['slug'].'/', $tree);
-				$tree .= '  </ul>' . "\n";
+				// Calculate class
+				if( $doc['slug'] == $page AND ( ( isset($parent) AND array_search($parent, $keys) == $doc['parent'] ) OR !isset($parent) ) )
+				{
+					$class = ' class="current"';
+				}
+				else if( in_array($doc['slug'], $current) )
+				{
+					$class = ' class="has_current"';
+				}
+
+				$tree .= '<li'.$class.'>' . "\n";
+				$tree .= '  <a href="{{ url:base }}' . $url . $doc['slug'] . '">' . $doc['title'] . '</a>' . "\n";
+
+				if( isset($doc['children']) )
+				{
+					$tree .= '  <ul>' . "\n";
+					$tree  = $this->build_navigation($doc['children'], $current, $keys, $url.$doc['slug'].'/', $tree);
+					$tree .= '  </ul>' . "\n";
+					$tree .= '</li>' . "\n";
+				}
+
 				$tree .= '</li>' . "\n";
+
 			}
-
-			$tree .= '</li>' . "\n";
-
 		}
 
 		// Return HTML

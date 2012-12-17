@@ -83,7 +83,6 @@ class Front extends Public_Controller
 
         		// Assign data
                 $doc_tree               = $this->documentation_m->generate_doc_tree($this->_data);
-                $doc_tree               = $doc_tree[0]['children'];
         		$this->data->navigation = $this->documentation_m->build_navigation($doc_tree, $pages, $keys);
                 $this->data->content    = Markdown(file_get_contents($filename));
 
